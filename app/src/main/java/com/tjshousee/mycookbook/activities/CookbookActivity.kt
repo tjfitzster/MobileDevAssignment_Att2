@@ -39,6 +39,8 @@ class CookbookActivity : AppCompatActivity() {
                 for (i in app.recipes.indices) {
                     i("Recipe[$i]:${app.recipes[i]}")
                 }
+                setResult(RESULT_OK)
+                finish()
             }
             else {
                 Snackbar.make(it,"Please Enter a Recipe", Snackbar.LENGTH_LONG).show()
