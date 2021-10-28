@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">My Cookbook</string>
+    <string name="button_addRecipe">Add Recipe</string>
+    <string name="hint_Recipe">Recipe Title</string>
+    <string name="hint_RecipeDescriptin">Recipe Description</string>
+    <string name="hint_RecipeIngredients">Recipe Ingredients</string>
 </resources>
