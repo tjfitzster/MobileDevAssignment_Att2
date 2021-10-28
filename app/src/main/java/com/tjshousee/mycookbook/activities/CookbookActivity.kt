@@ -6,6 +6,7 @@ import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 import timber.log.Timber.i
 import com.tjshousee.mycookbook.databinding.ActivityCookbookBinding
+import com.tjshousee.mycookbook.main.MainApp
 import com.tjshousee.mycookbook.models.RecipeModel
 
 
@@ -13,8 +14,8 @@ class CookbookActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCookbookBinding
     var recipe = RecipeModel()
-    val recipes = ArrayList<RecipeModel>()
 
+    lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,9 +23,9 @@ class CookbookActivity : AppCompatActivity() {
         binding = ActivityCookbookBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Timber.plant(Timber.DebugTree())
+        app = application as MainApp
 
-
+        i("Cookbook Activity started...")
 
         binding.btnAddrecipe.setOnClickListener() {
             recipe.title = binding.recipeTitle.text.toString()
@@ -32,12 +33,11 @@ class CookbookActivity : AppCompatActivity() {
             recipe.ingredients = binding.recipeIngredients.text.toString()
 
             if (recipe.title.isNotEmpty()) {
-
-                recipes.add(recipe.copy())
+                app.recipes.add(recipe.copy())
                 i("add Button Pressed: $recipe.title")
 
-                for (i in recipes.indices) {
-                    i("Recipe[$i]:${this.recipes[i]}")
+                for (i in app.recipes.indices) {
+                    i("Recipe[$i]:${app.recipes[i]}")
                 }
             }
             else {
