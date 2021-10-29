@@ -1,52 +1,113 @@
 package com.tjshousee.mycookbook.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
+import com.tjshousee.mycookbook.R
 import timber.log.Timber
 import timber.log.Timber.i
 import com.tjshousee.mycookbook.databinding.ActivityCookbookBinding
+import com.tjshousee.mycookbook.helpers.showImagePicker
 import com.tjshousee.mycookbook.main.MainApp
 import com.tjshousee.mycookbook.models.RecipeModel
+import com.squareup.picasso.Picasso
 
 
 class CookbookActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCookbookBinding
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+
     var recipe = RecipeModel()
 
     lateinit var app: MainApp
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        var edit = false
         binding = ActivityCookbookBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        binding.toolbarAdd.title = title
+        setSupportActionBar(binding.toolbarAdd)
         app = application as MainApp
 
+        registerImagePickerCallback()
+
         i("Cookbook Activity started...")
+
+        if (intent.hasExtra("placemark_edit")) {
+            edit = true
+            recipe = intent.extras?.getParcelable("recipe_edit")!!
+            binding.recipeTitle.setText(recipe.title)
+            binding.recipeDescription.setText(recipe.description)
+            binding.recipeIngredients.setText(recipe.ingredients)
+        }
 
         binding.btnAddrecipe.setOnClickListener() {
             recipe.title = binding.recipeTitle.text.toString()
             recipe.description = binding.recipeDescription.text.toString()
             recipe.ingredients = binding.recipeIngredients.text.toString()
 
-            if (recipe.title.isNotEmpty()) {
-                app.recipes.add(recipe.copy())
-                i("add Button Pressed: $recipe.title")
+            if (recipe.title.isEmpty()) {
+                Snackbar.make(it,R.string.enter_recipe_title, Snackbar.LENGTH_LONG)
+                    .show()
+            } else {
+                if (edit) {
+                    app.recipes.update(recipe.copy())
 
-                for (i in app.recipes.indices) {
-                    i("Recipe[$i]:${app.recipes[i]}")
+                } else {
+                    app.recipes.create(recipe.copy())
+
                 }
-                setResult(RESULT_OK)
-                finish()
+
             }
-            else {
-                Snackbar.make(it,"Please Enter a Recipe", Snackbar.LENGTH_LONG).show()
-            }
+            setResult(RESULT_OK)
+            finish()
 
         }
 
+        binding.chooseImage.setOnClickListener {
+            showImagePicker(imageIntentLauncher)
+        }
+
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_cancel -> { finish() }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun registerImagePickerCallback() {
+        imageIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when(result.resultCode){
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Result ${result.data!!.data}")
+                            recipe.image = result.data!!.data!!
+                            Picasso.get()
+                                .load(recipe.image)
+                                .into(binding.recipeImage)
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
+    }
+
 }
