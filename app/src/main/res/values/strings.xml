@@ -13,4 +13,5 @@
     <string name="change_recipe_image">Change recipe image</string>
     <string name="search_Google">Search Google For Recipe</string>
     <string name="Decision">Should I make this?</string>
+    <string name="Username_enter">Please enter a username</string>
 </resources>

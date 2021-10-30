@@ -13,7 +13,7 @@ data class Users(
         val weight: Double,
         val height: Int,
         val phone: String,
-        office: String
+        val office: String
     )
 
     data class Phone(

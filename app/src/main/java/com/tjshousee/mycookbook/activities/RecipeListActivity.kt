@@ -3,17 +3,16 @@ package com.tjshousee.mycookbook.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
 import android.view.Menu
 import android.view.MenuItem
-
 import androidx.recyclerview.widget.LinearLayoutManager
-
+import com.google.android.material.snackbar.Snackbar
 import com.tjshousee.mycookbook.R
 import com.tjshousee.mycookbook.adapters.RecipeAdapter
 import com.tjshousee.mycookbook.adapters.RecipeListener
-
 import com.tjshousee.mycookbook.databinding.ActivityRecipeListBinding
+import com.tjshousee.mycookbook.databinding.CardRecipeBinding
+import com.tjshousee.mycookbook.helpers.showImagePicker
 import com.tjshousee.mycookbook.main.MainApp
 import com.tjshousee.mycookbook.models.RecipeModel
 
@@ -37,8 +36,7 @@ class RecipeListActivity : AppCompatActivity(), RecipeListener {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = RecipeAdapter(app.recipes.findAll(),this)
-        // binding.recyclerView.adapter = RecipeAdapter(app.recipes.findAll())
-        //  binding.recyclerView.adapter = RecipeAdapter(app.recipes)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -66,6 +64,7 @@ class RecipeListActivity : AppCompatActivity(), RecipeListener {
         binding.recyclerView.adapter?.notifyDataSetChanged()
         super.onActivityResult(requestCode, resultCode, data)
     }
+
 
 }
 

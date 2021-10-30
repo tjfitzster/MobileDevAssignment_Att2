@@ -2,24 +2,27 @@ package com.tjshousee.mycookbook.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.android.material.snackbar.Snackbar
 import com.tjshousee.mycookbook.R
 
 import com.tjshousee.mycookbook.models.UserModelClass
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-
+import com.tjshousee.mycookbook.databinding.ActivityLoginBinding
 import java.nio.charset.Charset
 
-
 class LoginActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityLoginBinding
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val usersList: ArrayList<UserModelClass> = ArrayList()
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_login)
         try {
             // As we have JSON object, so we are getting the object
          //Here we are calling a Method which is returning the JSON object
@@ -53,6 +56,27 @@ class LoginActivity : AppCompatActivity() {
                  // add the details in the list
                  usersList.add(userDetails)
              }
+
+            setContentView(R.layout.activity_login)
+
+            binding.loginbutton.setOnClickListener() {
+
+                var username : String = binding.username.text.toString()
+                var pwd : String = binding.password.text.toString()
+
+
+                if (username.isEmpty()) {
+                    Snackbar.make(it,R.string.Username_enter, Snackbar.LENGTH_LONG)
+                        .show()
+                } else {
+
+                }
+                setResult(RESULT_OK)
+                finish()
+
+            }
+
+
 
         } catch (e: JSONException) {
             //exception
