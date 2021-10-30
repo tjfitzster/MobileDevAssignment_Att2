@@ -1,6 +1,7 @@
 package com.tjshousee.mycookbook.activities
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -21,13 +22,13 @@ import com.squareup.picasso.Picasso
 class CookbookActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCookbookBinding
-    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+
 
     var recipe = RecipeModel()
 
     lateinit var app: MainApp
-
-
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    val IMAGE_REQUEST = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,12 +43,16 @@ class CookbookActivity : AppCompatActivity() {
 
         i("Cookbook Activity started...")
 
-        if (intent.hasExtra("placemark_edit")) {
+        if (intent.hasExtra("recipe_edit")) {
             edit = true
             recipe = intent.extras?.getParcelable("recipe_edit")!!
             binding.recipeTitle.setText(recipe.title)
             binding.recipeDescription.setText(recipe.description)
             binding.recipeIngredients.setText(recipe.ingredients)
+            binding.btnAddrecipe.setText(R.string.save_recipe)
+            Picasso.get()
+                .load(recipe.image)
+                .into(binding.recipeImage)
         }
 
         binding.btnAddrecipe.setOnClickListener() {
@@ -77,6 +82,25 @@ class CookbookActivity : AppCompatActivity() {
             showImagePicker(imageIntentLauncher)
         }
 
+        binding.searchGoogle.setOnClickListener {
+
+            if (binding.recipeTitle.text.toString().isEmpty()) {
+                Snackbar.make(it, " Enter A search Term", Snackbar.LENGTH_LONG)
+                    .show()
+            }
+            else
+            {
+                val site = Intent(Intent.ACTION_VIEW)
+                var searchTerm: String? = binding.recipeTitle.text.toString()
+                searchTerm += " Recipe"
+                site.data = Uri.parse("https://www.google.com/search?&q=$searchTerm")
+                startActivity(site)
+            }
+
+        }
+
+
+        registerImagePickerCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

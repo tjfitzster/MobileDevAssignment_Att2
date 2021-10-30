@@ -9,4 +9,8 @@
     <string name="enter_recipe_title">Please enter Recipe Title</string>
     <string name="button_addImage"> Add Image </string>
     <string name="select_recipe_image">Select placemark image</string>
+    <string name="save_recipe"> Save Recipe </string>
+    <string name="change_recipe_image">Change recipe image</string>
+    <string name="search_Google">Search Google For Recipe</string>
+    <string name="Decision">Should I make this?</string>
 </resources>
