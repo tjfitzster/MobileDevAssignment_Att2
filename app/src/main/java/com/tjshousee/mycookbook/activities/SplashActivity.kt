@@ -21,7 +21,7 @@ class SplashActivity : AppCompatActivity() {
         // Initialize the handler instance
 
         mHandler.postDelayed({
-            val intent = Intent(this, RecipeListActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }, 3000)
