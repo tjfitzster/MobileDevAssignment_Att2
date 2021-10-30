@@ -96,10 +96,7 @@ class CookbookActivity : AppCompatActivity() {
                 site.data = Uri.parse("https://www.google.com/search?&q=$searchTerm")
                 startActivity(site)
             }
-
         }
-
-
         registerImagePickerCallback()
     }
 
