@@ -1,5 +1,6 @@
 package com.tjshousee.mycookbook.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -20,8 +21,12 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val usersList: ArrayList<UserModelClass> = ArrayList()
+        var user = UserModelClass()
+
 
         super.onCreate(savedInstanceState)
+
+
 
         try {
             // As we have JSON object, so we are getting the object
@@ -38,8 +43,10 @@ class LoginActivity : AppCompatActivity() {
                  val id = user.getInt("id")
                  val name = user.getString("name")
                  val email = user.getString("email")
+                 val username = user.getString("username")
+                 val password = user.getString("password")
                  val gender = user.getString("gender")
-                 val weight = user.getDouble("weight")
+                 val weight = user.getInt("weight")
                  val height = user.getInt("height")
 
                  // create a object for getting phone numbers data from JSONObject
@@ -51,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
 
                  // Now add all the variables to the data model class and the data model class to the array list.
                  val userDetails =
-                     UserModelClass(id, name, email, gender, weight, height, mobile, office)
+                     UserModelClass(id, name, email, username, password, gender, weight, height, mobile, office)
 
                  // add the details in the list
                  usersList.add(userDetails)
@@ -69,6 +76,29 @@ class LoginActivity : AppCompatActivity() {
                     Snackbar.make(it,R.string.Username_enter, Snackbar.LENGTH_LONG)
                         .show()
                 } else {
+
+                    for (i in usersList.indices) {
+                        if (usersList[i].username.equals(username))
+                        {
+                            val intent = Intent(this, CookbookActivity::class.java)
+                            startActivity(intent)
+
+                            // email address correct
+
+                            //if (usersList[i].password.equals(pwdpassword))
+                            // {
+                            // PASSWROD correct
+                            //     Toast.makeText(this, "PASSWORD CORRECT", Toast.LENGTH_SHORT).show()
+                            //   }
+                            // else{
+                            //     Toast.makeText(this, "PASSWORD INCORRECT", Toast.LENGTH_SHORT).show()
+                            //    Toast.makeText(this, "this.$users[i].password", Toast.LENGTH_SHORT).show()
+                            //  }
+                        }
+
+                    }
+
+
 
                 }
                 setResult(RESULT_OK)
